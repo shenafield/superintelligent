@@ -29,7 +29,7 @@ class ExplainerCog(commands.Cog):
         dynos_msg = None
         dynos_id = 155149108183695360
         start = time.time()
-        while not dynos_msg and time.time() - start < 15:
+        while (not dynos_msg) and (time.time() - start < 15):
             chat = message.channel.history(after=message)
             async for processed in chat:
                 if processed.author.id == dynos_id:
