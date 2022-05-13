@@ -14,7 +14,7 @@ class ExplainerCog(commands.Cog):
     async def on_message(self, message):
         if message.author.bot:
             return
-        if "sorry" not in message.content:
+        if "sorry" not in message.content.lower():
             return
         chat = await message.channel.history(
             limit=20,
