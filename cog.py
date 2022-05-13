@@ -27,11 +27,11 @@ class ExplainerCog(commands.Cog):
             chat.append(message)
         explaination = self.explainer.explain(chat)
         dynos_msg = None
-        carls_id = 235148962103951360
+        dynos_id = 155149108183695360
         start = time.time()
-        while not carls_msg and time.time() - start < 15:
+        while not dynos_msg and time.time() - start < 15:
             chat = message.channel.history(after=message)
             async for processed in chat:
-                if processed.author.id == carls_id:
-                    carls_msg = processed
-        await carls_msg.reply(explaination + "\n\nCarl u dumbass")
+                if processed.author.id == dynos_id:
+                    dynos_msg = processed
+        await dynos_msg.reply(explaination + "\n\nDyno u dumbass")
