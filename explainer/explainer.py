@@ -3,9 +3,9 @@ from complete import Complete
 
 
 class Explainer:
-    def __init__(self, complete: Complete):
+    def __init__(self, complete: Complete, prefix):
         self.complete = complete
-        self.prefix = open("prompt_example.txt").read()
+        self.prefix = prefix
 
     def explain(self, chat: list[discord.Message]):
         representation = "\n".join(

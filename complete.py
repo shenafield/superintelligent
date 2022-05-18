@@ -5,7 +5,6 @@ class Complete:
     def __init__(self, api_key, model="j1-jumbo"):
         self.key = api_key
         self.model = model
-        self.prefix = open("prompt_example.txt").read()
 
     def predict(
         self,

@@ -15,7 +15,7 @@ def main():
     model = os.getenv("MODEL", "j1-jumbo")
 
     bot = commands.Bot()
-    explainer = Explainer(Complete(api_key, model=model))
+    explainer = Explainer(Complete(api_key, model=model), open("prefixes/sorry.txt", "r").read())
     bot.add_cog(ExplainerCog(bot, explainer))
     bot.run(bot_token)
 
