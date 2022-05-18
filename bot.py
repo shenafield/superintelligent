@@ -4,6 +4,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 
 from cog import ExplainerCog
+from complete import Complete
 from explainer import Explainer
 
 
@@ -14,7 +15,7 @@ def main():
     model = os.getenv("MODEL", "j1-jumbo")
 
     bot = commands.Bot()
-    explainer = Explainer(api_key, model=model)
+    explainer = Explainer(Complete(api_key, model=model))
     bot.add_cog(ExplainerCog(bot, explainer))
     bot.run(bot_token)
 
