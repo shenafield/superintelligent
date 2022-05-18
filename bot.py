@@ -3,9 +3,9 @@ import os
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from cog import ExplainerCog
+from explainer.cog import ExplainerCog
 from complete import Complete
-from explainer import Explainer
+from explainer.explainer import Explainer
 
 
 def main():
