@@ -27,5 +27,5 @@ class NicknamerCog(commands.Cog):
         if not chat or chat[-1] != message:
             chat.append(message)
         nickname, explaination = self.nicknamer.comeupwith(chat)
-        await message.channel.send(f"I felt bored so I chose {message.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money.")
         await message.author.edit(nick=nickname)
+        await message.channel.send(f"I felt bored so I chose {message.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money.")
