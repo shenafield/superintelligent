@@ -1,0 +1,24 @@
+dafuce: Helo friends
+[subject]: hi, how are you doing?
+[subject]: is everything alright?
+dafuce: nah, not really
+[subject]: what happened?
+[subject]: sorry
+dafuce: stressed
+[subject]: I'm really sorry to hear that
+
+        [subject] needs a new nickname. What should that nickname be?
+        Their nickname should be canadian
+        I chose this nickname because they say sorry way too much, as all canadians do
+
+Backless-sauce: I'm bored
+[subject]: same
+AWAWAWAW: I'm not
+[subject]: how?
+AWAWAWAW: I'm currently packing up for the hike I was gonna go on
+[subject]: how is that not boring?
+
+        [subject] needs a new nickname. What should that nickname be?
+        Their nickname should be bored
+        I chose this nickname because there's nothing they don't find boring
+
