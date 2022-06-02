@@ -2,21 +2,33 @@ import random
 from datetime import datetime
 from datetime import timedelta
 
+import discord
 from discord.ext import commands
+from discord.utils import get
 
 
 class NicknamerCog(commands.Cog):
-    def __init__(self, bot, nicknamer, probablility=0.01):
+    def __init__(self, bot, nicknamer, probablility=0.01, roles=None):
         self.bot = bot
         self.nicknamer = nicknamer
         self.probablility = probablility
+        self.roles = roles
 
     @commands.Cog.listener()
-    @commands.has_role(981720280592420914) #  I'm too lazy to not hard code it
-    async def on_message(self, message):
+    async def on_message(self, message: discord.Message):
         if message.author.bot:
             return
         if random.random() > self.probablility:
+            return
+        guild: discord.Guild = message.guild
+        allowed = self.roles is None
+        for role_id in self.roles or []:
+            role = get(guild.roles, id=role_id)
+            if role in message.author.roles:
+                allowed = True
+                break
+        if not allowed:
+            print("discarded: no role found")
             return
         chat = await message.channel.history(
             limit=20,
