@@ -12,6 +12,7 @@ class NicknamerCog(commands.Cog):
         self.probablility = probablility
 
     @commands.Cog.listener()
+    @commands.has_role(981720280592420914) #  I'm too lazy to not hard code it
     async def on_message(self, message):
         if message.author.bot:
             return
