@@ -18,7 +18,8 @@ class NicknamerCog(commands.Cog):
     async def on_message(self, message: discord.Message):
         if message.author.bot:
             return
-        if random.random() > self.probablility:
+        responded_to = message.reference and (await message.channel.fetch_message(message.reference.message_id)).author
+        if responded_to == self.bot.user or random.random() > self.probablility:
             return
         guild: discord.Guild = message.guild
         allowed = self.roles is None
