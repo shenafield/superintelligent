@@ -16,11 +16,17 @@ class NicknamerCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
+        """This triggers when the bot sees a message anywhere"""
         if message.author.bot:
+            # We don't want to change other bots' nicknames
             return
+        # Check if this is someone yelling at the bot
         responded_to = message.reference and (await message.channel.fetch_message(message.reference.message_id)).author
+        # When to not trigger
         if responded_to == self.bot.user or random.random() > self.probablility:
             return
+
+        # Does thie member have the role that allows us to change their nickname?
         guild: discord.Guild = message.guild
         allowed = self.roles is None
         for role_id in self.roles or []:
@@ -31,6 +37,14 @@ class NicknamerCog(commands.Cog):
         if not allowed:
             print("discarded: no role found")
             return
+
+        chat = await self.get_chat(message)
+        nickname, explaination = self.nicknamer.comeupwith(chat)
+        await message.author.edit(nick=nickname)
+        await message.channel.send(f"I felt bored so I chose {message.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money.")
+
+    async def get_chat(self, message: discord.Message):
+        """Get the list of messages in the chat given the trigger one"""
         chat = await message.channel.history(
             limit=20,
             after=datetime.now() - timedelta(minutes=15),
@@ -40,6 +54,4 @@ class NicknamerCog(commands.Cog):
         chat = [message for message in chat if not message.author.bot]
         if not chat or chat[-1] != message:
             chat.append(message)
-        nickname, explaination = self.nicknamer.comeupwith(chat)
-        await message.author.edit(nick=nickname)
-        await message.channel.send(f"I felt bored so I chose {message.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money.")
+        return chat
