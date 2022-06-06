@@ -45,7 +45,7 @@ class NicknamerCog(commands.Cog):
             return
 
         chat = await self.get_chat(message.channel, message)
-        nickname, explaination = await self.nicknamer.comeupwith(chat)
+        nickname, explaination = await self.nicknamer.comeupwith(chat, chat[-1].author)
         await message.author.edit(nick=nickname)
         await message.channel.send(
             f"I felt bored so I chose {message.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money."
@@ -55,7 +55,7 @@ class NicknamerCog(commands.Cog):
     async def nickme(self, ctx):
         await ctx.defer()
         chat = await self.get_chat(ctx.channel)
-        nickname, explaination = await self.nicknamer.comeupwith(chat)
+        nickname, explaination = await self.nicknamer.comeupwith(chat, ctx.author)
         try:
             await ctx.author.edit(nick=nickname)
             await ctx.respond(
@@ -71,12 +71,17 @@ class NicknamerCog(commands.Cog):
         self, channel: discord.TextChannel, message: Optional[discord.Message] = None
     ):
         """Get the list of messages in the chat given the trigger one"""
-        chat = await channel.history(
-            limit=20,
-            after=datetime.now() - timedelta(minutes=15) if message else None,
-            before=message,
-            oldest_first=True,
-        ).flatten()
+        if message:
+            chat = await channel.history(
+                limit=20,
+                after=datetime.now() - timedelta(minutes=15),
+                before=message,
+            ).flatten()
+        else:
+            chat = await channel.history(
+                limit=20,
+            ).flatten()
+        chat = list(reversed(chat))
         chat = [message for message in chat if not message.author.bot]
         if message and (not chat or chat[-1] != message):
             chat.append(message)

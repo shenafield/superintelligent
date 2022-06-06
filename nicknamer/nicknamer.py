@@ -15,11 +15,10 @@ class Nicknamer:
             for token in self.complete.predict(string, maxTokens=0)["prompt"]["tokens"]
         ]
 
-    async def comeupwith(self, chat: list[discord.Message]):
-        subject = chat[-1].author
+    async def comeupwith(self, chat: list[discord.Message], subject: discord.User):
         placeholder = "[subject]"
         representation = "\n".join(
-            f"{placeholder if message.author == subject else message.author.display_name}: {message.content}"
+            f"{placeholder if message.author.id == subject.id else message.author.display_name}: {message.content}"
             for message in chat
         )
 
