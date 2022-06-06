@@ -1,11 +1,19 @@
 import discord
 from complete import Complete
+import functools
 
 
 class Nicknamer:
     def __init__(self, complete: Complete, prefix):
         self.complete = complete
         self.prefix = prefix
+
+    @functools.cache
+    def tokens_for_string(self, string: str):
+        return [
+            token["generatedToken"]["token"]
+            for token in self.complete.predict(string, maxTokens=0)["prompt"]["tokens"]
+        ]
 
     async def comeupwith(self, chat: list[discord.Message]):
         subject = chat[-1].author
@@ -27,15 +35,7 @@ class Nicknamer:
                 names += member.nick.split(" ")
             names += member.name.split(" ")
         tokens = sum(
-            (
-                [
-                    token["generatedToken"]["token"]
-                    for token in self.complete.predict(name, maxTokens=0)["prompt"][
-                        "tokens"
-                    ]
-                ]
-                for name in set(names)
-            ),
+            (self.tokens_for_string(name) for name in set(names)),
             [],
         )
         bias = {token: -100 for token in set(tokens)}

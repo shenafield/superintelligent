@@ -62,7 +62,10 @@ class NicknamerCog(commands.Cog):
                 f"I was asked to choose {ctx.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money."
             )
         except discord.errors.Forbidden:
-            await ctx.respond("Failed to change your nickname; I might not have the permissions to do it", ephemeral=True)
+            await ctx.respond(
+                "Failed to change your nickname; I might not have the permissions to do it",
+                ephemeral=True,
+            )
 
     async def get_chat(
         self, channel: discord.TextChannel, message: Optional[discord.Message] = None
