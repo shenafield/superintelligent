@@ -14,6 +14,7 @@ class Complete:
         stopSequences=[],
         topKReturn=0,
         temperature=0.0,
+        bias={},
     ):
         response = requests.post(
             f"https://api.ai21.com/studio/v1/{self.model}/complete",
@@ -25,9 +26,12 @@ class Complete:
                 "stopSequences": stopSequences,
                 "topKReturn": topKReturn,
                 "temperature": temperature,
+                "logitBias": bias,
             },
         )
-        return response.json()
+        a = response.json()
+        print(a)
+        return a
 
     def complete(self, prompt, **kwargs):
         return self.predict(prompt, **kwargs)["completions"][0]["data"]["text"]

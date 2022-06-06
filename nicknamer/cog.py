@@ -40,14 +40,14 @@ class NicknamerCog(commands.Cog):
             return
 
         chat = await self.get_chat(message.channel, message)
-        nickname, explaination = self.nicknamer.comeupwith(chat)
+        nickname, explaination = await self.nicknamer.comeupwith(chat)
         await message.author.edit(nick=nickname)
         await message.channel.send(f"I felt bored so I chose {message.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money.")
     
     @commands.slash_command(description="Get a brand new nickname")
     async def nickme(self, ctx):
         chat = await self.get_chat(ctx.channel)
-        nickname, explaination = self.nicknamer.comeupwith(chat)
+        nickname, explaination = await self.nicknamer.comeupwith(chat)
         await ctx.author.edit(nick=nickname)
         await ctx.respond(f"I was asked to choose {ctx.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money.")
 
@@ -55,7 +55,7 @@ class NicknamerCog(commands.Cog):
         """Get the list of messages in the chat given the trigger one"""
         chat = await channel.history(
             limit=20,
-            after=datetime.now() - timedelta(minutes=15),
+            after=datetime.now() - timedelta(minutes=15) if message else None,
             before=message,
             oldest_first=True,
         ).flatten()
