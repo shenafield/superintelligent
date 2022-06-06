@@ -15,6 +15,7 @@ class NicknamerCog(commands.Cog):
         self.roles = roles
 
     @commands.Cog.listener()
+    #main script, activates on detection of new message
     async def on_message(self, message: discord.Message):
         if message.author.bot:
             return
@@ -38,8 +39,16 @@ class NicknamerCog(commands.Cog):
             oldest_first=True,
         ).flatten()
         chat = [message for message in chat if not message.author.bot]
-        if not chat or chat[-1] != message:
+        if  not chat or chat[-1] != message:
             chat.append(message)
+        
         nickname, explaination = self.nicknamer.comeupwith(chat)
         await message.author.edit(nick=nickname)
         await message.channel.send(f"I felt bored so I chose {message.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money.")
+
+@bot.command(description='Use this for a random rename.')
+async def rename(message: discord.Message, ctx):
+    guild: discord.Guild = message.guild
+    nickname, explaination = self.nicknamer.comeupwith(chat)
+    await message.author.edit(nick=nickname)
+    await ctx.respond(f"I chose {message.author.mention} a new nickname - {nickname} because they're lazy and asked me to choose one for them.\nI chose this nickname because {explaination}.\n\nGimme money.")
