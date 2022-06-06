@@ -29,9 +29,7 @@ class Complete:
                 "logitBias": bias,
             },
         )
-        a = response.json()
-        print(a)
-        return a
+        return response.json()
 
     def complete(self, prompt, **kwargs):
         return self.predict(prompt, **kwargs)["completions"][0]["data"]["text"]

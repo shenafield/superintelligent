@@ -53,12 +53,16 @@ class NicknamerCog(commands.Cog):
 
     @commands.slash_command(description="Get a brand new nickname")
     async def nickme(self, ctx):
+        await ctx.defer()
         chat = await self.get_chat(ctx.channel)
         nickname, explaination = await self.nicknamer.comeupwith(chat)
-        await ctx.author.edit(nick=nickname)
-        await ctx.respond(
-            f"I was asked to choose {ctx.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money."
-        )
+        try:
+            await ctx.author.edit(nick=nickname)
+            await ctx.respond(
+                f"I was asked to choose {ctx.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money."
+            )
+        except discord.errors.Forbidden:
+            await ctx.respond("Failed to change your nickname; I might not have the permissions to do it", ephemeral=True)
 
     async def get_chat(
         self, channel: discord.TextChannel, message: Optional[discord.Message] = None
