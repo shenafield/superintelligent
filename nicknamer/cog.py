@@ -49,7 +49,7 @@ class NicknamerCog(commands.Cog):
         chat = await self.get_chat(ctx.channel)
         nickname, explaination = self.nicknamer.comeupwith(chat)
         await ctx.author.edit(nick=nickname)
-        await ctx.channel.send(f"I felt bored so I chose {ctx.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money.")
+        await ctx.respond(f"I was asked to choose {ctx.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money.")
 
     async def get_chat(self, channel:discord.TextChannel, message: Optional[discord.Message] = None):
         """Get the list of messages in the chat given the trigger one"""
