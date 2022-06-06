@@ -16,7 +16,7 @@ def main():
     api_key = os.getenv("API_KEY")
     bot_token = os.getenv("BOT_TOKEN")
     model = os.getenv("MODEL", "j1-jumbo")
-    nick_freq = os.getenv("NICKNAME_FREQ", 0.05)
+    nick_freq = float(os.getenv("NICKNAME_FREQ", 0.05))
     roles = json.loads(os.getenv("NICKNAME_ROLES", "null"))
 
     bot = commands.Bot()
