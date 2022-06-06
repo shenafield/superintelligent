@@ -51,13 +51,15 @@ class Nicknamer:
         continuation = """
         I chose this nickname because """
         nickname = self.complete.complete(
-            prompt, stopSequences=[".", "\n"], maxTokens=4
+            prompt,
+            stopSequences=[".", "\n"],
+            maxTokens=4,
+            bias=bias,
         ).strip()
         explaination = self.complete.complete(
             prompt + nickname + continuation,
             stopSequences=[".", "\n"],
             maxTokens=32,
-            bias=bias,
         )
         print(prompt + nickname + continuation + explaination)
         return nickname, explaination
