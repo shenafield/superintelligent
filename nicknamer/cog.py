@@ -23,7 +23,7 @@ class NicknamerCog(commands.Cog):
         # Check if this is someone yelling at the bot
         responded_to = message.reference and (await message.channel.fetch_message(message.reference.message_id)).author
         # When to not trigger
-        if responded_to == self.bot.user or random.random() > self.probablility:
+        if responded_to != self.bot.user and random.random() > self.probablility:
             return
 
         # Does thie member have the role that allows us to change their nickname?
