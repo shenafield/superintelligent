@@ -1,6 +1,7 @@
 import random
 from datetime import datetime
 from datetime import timedelta
+from typing import Optional
 
 import discord
 from discord.ext import commands
@@ -38,20 +39,27 @@ class NicknamerCog(commands.Cog):
             print("discarded: no role found")
             return
 
-        chat = await self.get_chat(message)
+        chat = await self.get_chat(message.channel, message)
         nickname, explaination = self.nicknamer.comeupwith(chat)
         await message.author.edit(nick=nickname)
         await message.channel.send(f"I felt bored so I chose {message.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money.")
+    
+    @commands.slash_command(description="Get a brand new nickname")
+    async def nickme(self, ctx):
+        chat = await self.get_chat(ctx.channel)
+        nickname, explaination = self.nicknamer.comeupwith(chat)
+        await ctx.author.edit(nick=nickname)
+        await ctx.channel.send(f"I felt bored so I chose {ctx.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money.")
 
-    async def get_chat(self, message: discord.Message):
+    async def get_chat(self, channel:discord.TextChannel, message: Optional[discord.Message] = None):
         """Get the list of messages in the chat given the trigger one"""
-        chat = await message.channel.history(
+        chat = await channel.history(
             limit=20,
             after=datetime.now() - timedelta(minutes=15),
             before=message,
             oldest_first=True,
         ).flatten()
         chat = [message for message in chat if not message.author.bot]
-        if not chat or chat[-1] != message:
+        if message and (not chat or chat[-1] != message):
             chat.append(message)
         return chat
