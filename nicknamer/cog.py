@@ -22,7 +22,12 @@ class NicknamerCog(commands.Cog):
             # We don't want to change other bots' nicknames
             return
         # Check if this is someone yelling at the bot
-        responded_to = message.reference and (await message.channel.fetch_message(message.reference.message_id)).author
+        responded_to = (
+            message.reference
+            and (
+                await message.channel.fetch_message(message.reference.message_id)
+            ).author
+        )
         # When to not trigger
         if responded_to != self.bot.user and random.random() > self.probablility:
             return
@@ -42,16 +47,22 @@ class NicknamerCog(commands.Cog):
         chat = await self.get_chat(message.channel, message)
         nickname, explaination = await self.nicknamer.comeupwith(chat)
         await message.author.edit(nick=nickname)
-        await message.channel.send(f"I felt bored so I chose {message.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money.")
-    
+        await message.channel.send(
+            f"I felt bored so I chose {message.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money."
+        )
+
     @commands.slash_command(description="Get a brand new nickname")
     async def nickme(self, ctx):
         chat = await self.get_chat(ctx.channel)
         nickname, explaination = await self.nicknamer.comeupwith(chat)
         await ctx.author.edit(nick=nickname)
-        await ctx.respond(f"I was asked to choose {ctx.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money.")
+        await ctx.respond(
+            f"I was asked to choose {ctx.author.mention} a new nickname - {nickname}.\nI chose this nickname because {explaination}.\n\nGimme money."
+        )
 
-    async def get_chat(self, channel:discord.TextChannel, message: Optional[discord.Message] = None):
+    async def get_chat(
+        self, channel: discord.TextChannel, message: Optional[discord.Message] = None
+    ):
         """Get the list of messages in the chat given the trigger one"""
         chat = await channel.history(
             limit=20,

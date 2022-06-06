@@ -20,6 +20,8 @@ class Explainer:
         Q: what is {subject} sorry for?
         A: {subject} is sorry for """
         )
-        response = self.complete.complete(prompt, stopSequences=[".", "\n"], maxTokens=32)
+        response = self.complete.complete(
+            prompt, stopSequences=[".", "\n"], maxTokens=32
+        )
         print(prompt + response)
         return f"{subject} is sorry for " + response
